@@ -98,11 +98,15 @@ jobs:
 
     - name: Load custom configuration
       run: |
-        [ -e files ] && mv files openwrt/files
-        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
+        echo "Checking if 'files' directory exists..."
+        [ -e files ] && mv files openwrt/files || echo "'files' directory not found, skipping."
+
+        echo "Moving config file..."
+        [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config || echo "Config file not found, skipping."
+
+        echo "Running DIY script..."
         chmod +x $DIY_SH
-        cd openwrt
-        $GITHUB_WORKSPACE/$DIY_SH
+        $GITHUB_WORKSPACE/$DIY_SH || { echo "DIY script failed."; exit 1; }
 
     - name: Download package
       id: package

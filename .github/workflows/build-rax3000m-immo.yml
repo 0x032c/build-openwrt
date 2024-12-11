@@ -64,7 +64,7 @@ jobs:
         sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
         sudo -E apt-get -qq update
         sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.org/init_build_environment.sh)'
-        # sudo -E apt-get -qq install $(curl -fsSL https://raw.githubusercontent.com/Huanyueyichen/openwrt-list/master/openwrt-ubuntu-2204)
+        # sudo -E apt-get -qq install build-essential clang flex bison g++ gawk gcc-multilib g++-multilib gettext git libncurses-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget libfuse-dev python3-pyelftools
         sudo -E apt-get -qq install libfuse-dev
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
@@ -134,6 +134,7 @@ jobs:
       id: organize
       run: |
         cd openwrt/bin/targets/*/*
+        ls -al
         rm -rf packages
         #rm -rf config.buildinfo
         rm -rf feeds.buildinfo
@@ -147,6 +148,11 @@ jobs:
         mv immortalwrt-mediatek-mt7981-cmcc_rax3000m-squashfs-sysupgrade.bin immortalwrt-2102-cmcc_rax3000m-nand-squashfs-sysupgrade.bin
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "status=success" >> $GITHUB_OUTPUT
+
+    - name: Check Files in Firmware Directory
+      run: |
+        echo "Checking files in: $GITHUB_WORKSPACE/openwrt/bin/targets/mediatek/mt7981/"
+        ls -al $GITHUB_WORKSPACE/openwrt/bin/targets/mediatek/mt7981/
 
     - name: Generate release tag
       id: tag

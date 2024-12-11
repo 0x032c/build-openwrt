@@ -1,0 +1,22 @@
+#!/bin/sh
+
+# timezone
+uci set system.@system[0].timezone=CST-8
+uci set system.@system[0].zonename=Asia/Shanghai
+
+# ntp server
+uci -q delete system.ntp.server
+uci add_list system.ntp.server="ntp.aliyun.com"
+uci add_list system.ntp.server="time1.cloud.tencent.com"
+uci add_list system.ntp.server="time.ustc.edu.cn"
+uci add_list system.ntp.server="cn.pool.ntp.org"
+uci commit system && service sysntpd reload
+
+# Dnsmasq
+sed -i '/log-facility/d' /etc/dnsmasq.conf
+echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
+
+rm -rf /tmp/luci-modulecache/
+rm -f /tmp/luci-indexcache
+
+exit 0

@@ -1,5 +1,5 @@
 # AutoBuild-OpenWrt
-[![Build Status](https://img.shields.io/github/actions/workflow/status/0x032c/build-openwrt/x86_64-main.yml?style=flat&logo=github)](https://github.com/0x032c/build-openwrt/actions/workflows/x86_64-main.yml)
+[![Build Status](https://img.shields.io/github/actions/workflow/status/0x032c/build-openwrt/build-rax3000m-immo.yml?style=flat&logo=github)](https://github.com/0x032c/build-openwrt/actions/workflows/build-rax3000m-immo.yml)
 [![LICENSE](https://img.shields.io/github/license/mashape/apistatus.svg?style=flat&logo=github&label=LICENSE)](https://github.com/0x032c/build-openwrt/blob/master/LICENSE)
 
 Build OpenWrt firware [hanwckf's OpenWrt](https://github.com/hanwckf/immortalwrt-mt798x) using GitHub Actions  

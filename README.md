@@ -4,50 +4,50 @@
 [![x86_64-main](https://img.shields.io/github/actions/workflow/status/0x032c/build-openwrt/build-x86_64-main.yml?style=flat&logo=github&label=x86_64-main)](https://github.com/0x032c/build-openwrt/actions/workflows/build-x86_64-main.yml)
 [![LICENSE](https://img.shields.io/github/license/0x032c/build-openwrt?style=flat)](https://github.com/0x032c/build-openwrt/blob/main/LICENSE)
 
-使用 GitHub Actions 自动构建 OpenWrt / ImmortalWrt 固件。
+Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 
-## 支持设备
+## Supported Devices
 
-| 设备 | 源码 | 架构 | Workflow |
-|------|------|------|----------|
+| Device | Source | SoC | Workflow |
+|--------|--------|-----|----------|
 | CMCC RAX3000M (NAND) | [hanwckf/immortalwrt-mt798x](https://github.com/hanwckf/immortalwrt-mt798x) | MT7981 (arm64) | `build-rax3000m-immo.yml` |
-| x86_64 软路由/虚拟机 | [openwrt/openwrt](https://github.com/openwrt/openwrt) | x86_64 | `build-x86_64-main.yml` |
+| x86_64 (VM / Soft Router) | [openwrt/openwrt](https://github.com/openwrt/openwrt) | x86_64 | `build-x86_64-main.yml` |
 
-## 固件特性
+## Features
 
-- 默认后台地址：`192.168.100.1`
-- 默认密码：`password`
-- 主题：Argon
-- 终端：ZSH + Oh My Zsh
+- **Theme**: Argon with custom background
+- **Shell**: ZSH + Oh My Zsh (autosuggestions, syntax highlighting)
+- **Default gateway**: `192.168.100.1`
+- **Default password**: `password`
 
-### 预装插件
+### Pre-installed Packages
 
-| 类别 | 插件 |
-|------|------|
-| 科学上网 | OpenClash, Passwall (x86) |
+| Category | Packages |
+|----------|----------|
+| Proxy | OpenClash, Passwall (x86 only) |
 | DNS | MosDNS, AdGuardHome |
-| 下载 | qBittorrent (x86), Alist (x86) |
-| 工具 | DDNS-Go, Socat, WoL+, 文件助手 |
+| Download | qBittorrent (x86), Alist (x86) |
+| Utilities | DDNS-Go, Socat, WoL+, File Assistant |
 
-## 使用方法
+## Usage
 
-1. 进入 [Actions](https://github.com/0x032c/build-openwrt/actions) 页面
-2. 选择左侧对应的 workflow
-3. 点击右侧 **"Run workflow"** 按钮手动触发构建
-4. 等待约 1~1.5 小时，构建完成后固件会自动发布到 [Releases](https://github.com/0x032c/build-openwrt/releases)
+1. Navigate to the [Actions](https://github.com/0x032c/build-openwrt/actions) tab
+2. Select a workflow from the left sidebar
+3. Click **"Run workflow"** to trigger a build manually
+4. Wait ~1–1.5 hours; firmware will be published to [Releases](https://github.com/0x032c/build-openwrt/releases) automatically
 
-## 项目结构
+## Project Structure
 
 ```
-├── .github/workflows/     # GitHub Actions 工作流
-├── immo/                  # RAX3000M 配置和 DIY 脚本
-├── main/                  # x86_64 配置和 DIY 脚本
-├── patches/               # 自定义补丁（AdGuardHome、default-settings、.zshrc）
-├── scripts/               # 共享脚本（环境初始化、磁盘清理、OpenClash）
-└── bg1.jpg                # Argon 主题背景图
+├── .github/workflows/     # CI workflow definitions
+├── immo/                  # RAX3000M device config & DIY script
+├── main/                  # x86_64 device config & DIY script
+├── patches/               # Custom patches (AdGuardHome, default-settings, .zshrc)
+├── scripts/               # Shared scripts (env setup, disk cleanup, OpenClash)
+└── bg1.jpg                # Argon theme background
 ```
 
-## 致谢
+## Credits
 
 - [P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt)
 - [hanwckf/immortalwrt-mt798x](https://github.com/hanwckf/immortalwrt-mt798x)

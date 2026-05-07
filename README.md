@@ -35,20 +35,24 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 
 1. Click **[Fork](https://github.com/0x032c/build-openwrt/fork)** at the top right
 2. In your forked repo, go to **Actions** tab → Click **"I understand my workflows, go ahead and enable them"**
-3. Select a workflow from the left sidebar → Click **"Run workflow"**
-4. Wait ~1–1.5 hours; firmware will be published to your repo's [Releases](../../releases) automatically
+3. Select **build-all** to build all targets, or choose a specific device workflow
+4. Click **"Run workflow"** → Wait ~1–1.5 hours
+5. Firmware will be published to your repo's [Releases](../../releases) automatically
+
+> **Scheduled builds**: `build-all` runs automatically on the 1st of each month.
 
 ## Project Structure
 
 ```
-├── .github/workflows/     # CI workflow definitions
+├── .github/workflows/     # CI workflow definitions (build-all, per-device, delete-tags)
 ├── immo-21.02/            # RAX3000M (hanwckf 21.02) config & DIY script
 ├── immo-24.10/            # RAX3000M (ImmortalWrt 24.10) config & DIY script
 ├── x86_64/                # x86_64 device config & DIY script
 ├── uboot/                 # Pre-built U-Boot for RAX3000M (supports .itb)
-├── patches/               # Custom patches (AdGuardHome, default-settings, .zshrc)
+├── patches/               # Custom patches (AdGuardHome, default-settings, bg1.jpg, .zshrc)
 ├── scripts/               # Shared scripts (env setup, disk cleanup, OpenClash)
-└── bg1.jpg                # Argon theme background
+├── COMPARISON.md          # Detailed comparison: 21.02 vs 24.10
+└── LICENSE
 ```
 
 ## Credits

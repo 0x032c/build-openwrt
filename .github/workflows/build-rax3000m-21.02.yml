@@ -4,7 +4,7 @@
 # Description: Build OpenWrt using GitHub Actions
 #
 
-name: rax3000m-immo
+name: rax3000m-21.02
 
 permissions: write-all
 

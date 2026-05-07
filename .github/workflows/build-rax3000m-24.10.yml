@@ -138,7 +138,7 @@ jobs:
           echo "- Password: (none)" >> release.txt
           echo "" >> release.txt
           echo "⚠️ Requires U-Boot with FIT image support (.itb format)" >> release.txt
-          release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-rax3000m
+          release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-cmcc_rax3000m
           echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT
 

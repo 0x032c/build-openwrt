@@ -137,7 +137,7 @@ jobs:
           echo -e "### openwrt-x86_64" >> release.txt
           echo "- 后台地址：192.168.100.1" >> release.txt
           echo "- 默认密码：password" >> release.txt
-          release_tag=$(date +"%Y.%m.%d")-x86_64
+          release_tag=$(date +"%Y.%m.%d")-openwrt-21.02-x86_64
           echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT
 

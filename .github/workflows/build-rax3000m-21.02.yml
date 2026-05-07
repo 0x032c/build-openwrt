@@ -161,7 +161,7 @@ jobs:
           fi
           echo "- 后台地址：192.168.100.1" >> release.txt
           echo "- 默认密码：password" >> release.txt
-          release_tag=$(date +"%Y.%m.%d")-immo-nand-${wlan_luci_interface}
+          release_tag=$(date +"%Y.%m.%d")-immortalwrt-21.02-cmcc_rax3000m
           echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT
 

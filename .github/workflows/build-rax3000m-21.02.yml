@@ -24,6 +24,7 @@ on:
         type: boolean
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
   CONFIG_FILE: immo-21.02/cmcc-rax3000m.config
@@ -53,8 +54,8 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          echo "USE_MTWIFI_CFG=${{ github.event.inputs.USE_MTWIFI_CFG }}" >> $GITHUB_ENV
-          echo "USE_NX30PRO_EEPROM=${{ github.event.inputs.USE_NX30PRO_EEPROM }}" >> $GITHUB_ENV
+          echo "USE_MTWIFI_CFG=${{ github.event.inputs.USE_MTWIFI_CFG || 'true' }}" >> $GITHUB_ENV
+          echo "USE_NX30PRO_EEPROM=${{ github.event.inputs.USE_NX30PRO_EEPROM || 'true' }}" >> $GITHUB_ENV
           sudo -E apt-get -qq update -y
           sudo -E apt-get -qq full-upgrade -y
           chmod +x $ENV_SH && $ENV_SH
@@ -169,7 +170,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ steps.tag.outputs.release_tag }} immortalwrt
+          name: ${{ steps.tag.outputs.release_tag }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
@@ -188,5 +189,6 @@ jobs:
         with:
           keep_latest: 10
           delete_tags: true
+          delete_tag_pattern: '.*21.02.*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

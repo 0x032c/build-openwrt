@@ -13,6 +13,7 @@ on:
   workflow_dispatch:
 
 env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
   REPO_URL: https://github.com/openwrt/openwrt
   REPO_BRANCH: openwrt-21.02
   CONFIG_FILE: x86_64/x86_64.config
@@ -145,7 +146,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: ${{ steps.tag.outputs.release_tag }} openwrt
+          name: ${{ steps.tag.outputs.release_tag }}
           tag_name: ${{ steps.tag.outputs.release_tag }}
           body_path: release.txt
           files: ${{ env.FIRMWARE }}/*
@@ -164,5 +165,6 @@ jobs:
         with:
           keep_latest: 10
           delete_tags: true
+          delete_tag_pattern: '.*x86_64.*'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

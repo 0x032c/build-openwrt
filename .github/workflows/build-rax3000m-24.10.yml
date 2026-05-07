@@ -8,10 +8,8 @@ name: rax3000m-24.10
 permissions: write-all
 
 on:
-  repository_dispatch:
+  workflow_call:
   workflow_dispatch:
-  # schedule:
-  #   - cron: 0 8 1 * *
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt

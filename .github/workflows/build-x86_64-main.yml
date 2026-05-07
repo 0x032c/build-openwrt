@@ -9,10 +9,8 @@ name: x86_64-main
 permissions: write-all
 
 on:
-  repository_dispatch:
+  workflow_call:
   workflow_dispatch:
-  # schedule:
-  #   - cron: 0 21 ? * 0,4
 
 env:
   REPO_URL: https://github.com/openwrt/openwrt

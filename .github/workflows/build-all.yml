@@ -1,0 +1,25 @@
+#
+# Build all firmware targets in parallel
+#
+
+name: build-all
+
+permissions: write-all
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 8 1 * *
+
+jobs:
+  rax3000m-21-02:
+    uses: ./.github/workflows/build-rax3000m-21.02.yml
+    secrets: inherit
+
+  rax3000m-24-10:
+    uses: ./.github/workflows/build-rax3000m-24.10.yml
+    secrets: inherit
+
+  x86_64:
+    uses: ./.github/workflows/build-x86_64-main.yml
+    secrets: inherit

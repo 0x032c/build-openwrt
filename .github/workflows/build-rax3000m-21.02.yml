@@ -9,7 +9,7 @@ name: rax3000m-21.02
 permissions: write-all
 
 on:
-  repository_dispatch:
+  workflow_call:
   workflow_dispatch:
     inputs:
       USE_MTWIFI_CFG:
@@ -22,8 +22,6 @@ on:
         required: true
         default: true
         type: boolean
-  schedule:
-    - cron: 0 8 1 * *
 
 env:
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x

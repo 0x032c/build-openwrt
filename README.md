@@ -42,7 +42,7 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 
 ```
 ├── .github/workflows/     # CI workflow definitions
-├── immo/                  # RAX3000M (hanwckf 21.02) config & DIY script
+├── immo-21.02/            # RAX3000M (hanwckf 21.02) config & DIY script
 ├── immo-24.10/            # RAX3000M (ImmortalWrt 24.10) config & DIY script
 ├── main/                  # x86_64 device config & DIY script
 ├── uboot/                 # Pre-built U-Boot for RAX3000M (supports .itb)

@@ -28,8 +28,8 @@ on:
 env:
   REPO_URL: https://github.com/hanwckf/immortalwrt-mt798x
   REPO_BRANCH: openwrt-21.02
-  CONFIG_FILE: immo/cmcc-rax3000m.config
-  DIY_SH: immo/cmcc-rax3000m.sh
+  CONFIG_FILE: immo-21.02/cmcc-rax3000m.config
+  DIY_SH: immo-21.02/cmcc-rax3000m.sh
   FREE_DISK_SH: scripts/free_disk_space.sh
   ENV_SH: scripts/environment.sh
   UPLOAD_BIN_DIR: false

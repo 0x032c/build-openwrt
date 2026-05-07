@@ -29,12 +29,12 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 | Download | qBittorrent (x86), Alist (x86) |
 | Utilities | DDNS-Go, Socat, WoL+, File Assistant |
 
-## Usage
+## Quick Start
 
-1. Navigate to the [Actions](https://github.com/0x032c/build-openwrt/actions) tab
-2. Select a workflow from the left sidebar
-3. Click **"Run workflow"** to trigger a build manually
-4. Wait ~1–1.5 hours; firmware will be published to [Releases](https://github.com/0x032c/build-openwrt/releases) automatically
+1. Click **[Fork](https://github.com/0x032c/build-openwrt/fork)** at the top right
+2. In your forked repo, go to **Actions** tab → Click **"I understand my workflows, go ahead and enable them"**
+3. Select a workflow from the left sidebar → Click **"Run workflow"**
+4. Wait ~1–1.5 hours; firmware will be published to your repo's [Releases](../../releases) automatically
 
 ## Project Structure
 

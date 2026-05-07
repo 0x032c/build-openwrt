@@ -1,6 +1,7 @@
 # build-openwrt
 
 [![rax3000m-immo](https://img.shields.io/github/actions/workflow/status/0x032c/build-openwrt/build-rax3000m-immo.yml?style=flat&logo=github&label=rax3000m-immo)](https://github.com/0x032c/build-openwrt/actions/workflows/build-rax3000m-immo.yml)
+[![rax3000m-24.10](https://img.shields.io/github/actions/workflow/status/0x032c/build-openwrt/build-rax3000m-24.10.yml?style=flat&logo=github&label=rax3000m-24.10)](https://github.com/0x032c/build-openwrt/actions/workflows/build-rax3000m-24.10.yml)
 [![x86_64-main](https://img.shields.io/github/actions/workflow/status/0x032c/build-openwrt/build-x86_64-main.yml?style=flat&logo=github&label=x86_64-main)](https://github.com/0x032c/build-openwrt/actions/workflows/build-x86_64-main.yml)
 [![LICENSE](https://img.shields.io/github/license/0x032c/build-openwrt?style=flat)](https://github.com/0x032c/build-openwrt/blob/main/LICENSE)
 
@@ -8,10 +9,11 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 
 ## Supported Devices
 
-| Device | Source | SoC | Workflow |
-|--------|--------|-----|----------|
-| CMCC RAX3000M (NAND) | [hanwckf/immortalwrt-mt798x](https://github.com/hanwckf/immortalwrt-mt798x) | MT7981 (arm64) | `build-rax3000m-immo.yml` |
-| x86_64 (VM / Soft Router) | [openwrt/openwrt](https://github.com/openwrt/openwrt) | x86_64 | `build-x86_64-main.yml` |
+| Device | Source | Kernel | WiFi | Workflow |
+|--------|--------|--------|------|----------|
+| RAX3000M (NAND) - Legacy | [hanwckf/immortalwrt-mt798x](https://github.com/hanwckf/immortalwrt-mt798x) | 5.4 | MTK closed-source | `build-rax3000m-immo.yml` |
+| RAX3000M (NAND) - **24.10** | [immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt) | 6.6 | mt76 open-source | `build-rax3000m-24.10.yml` |
+| x86_64 (VM / Soft Router) | [openwrt/openwrt](https://github.com/openwrt/openwrt) | 5.15 | N/A | `build-x86_64-main.yml` |
 
 ## Features
 
@@ -40,7 +42,8 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 
 ```
 ├── .github/workflows/     # CI workflow definitions
-├── immo/                  # RAX3000M device config & DIY script
+├── immo/                  # RAX3000M (hanwckf 21.02) config & DIY script
+├── immo-24.10/            # RAX3000M (ImmortalWrt 24.10) config & DIY script
 ├── main/                  # x86_64 device config & DIY script
 ├── patches/               # Custom patches (AdGuardHome, default-settings, .zshrc)
 ├── scripts/               # Shared scripts (env setup, disk cleanup, OpenClash)

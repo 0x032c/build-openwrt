@@ -107,22 +107,12 @@ jobs:
         if: (!cancelled())
         run: df -hT
 
-      - name: Organize files & convert formats
+      - name: Organize files
         id: organize
         if: steps.compile.outputs.status == 'success'
         run: |
           cd openwrt/bin/targets/*/*
-          rm -rf packages *.buildinfo *.json *.manifest *-kernel.bin *-rootfs.tar.gz *-squashfs-rootfs.img.gz
-
-          # Convert img.gz to vmdk
-          for f in *combined-efi.img.gz; do
-            [ -f "$f" ] || continue
-            gunzip -k "$f"
-            img="${f%.gz}"
-            qemu-img convert -f raw -O vmdk "$img" "${img%.img}.vmdk"
-            rm -f "$img"
-          done
-
+          rm -rf packages *.buildinfo *.json *.manifest *kernel.bin *rootfs.img.gz *rootfs.tar.gz
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
@@ -146,8 +136,14 @@ jobs:
           echo "- Password: (none)" >> release.txt
           echo "" >> release.txt
           echo "**Firmware formats:**" >> release.txt
-          echo "- \`*-combined-efi.img.gz\` → 物理机 / PVE 直写" >> release.txt
-          echo "- \`*-combined-efi.vmdk\` → VMware 直接挂载" >> release.txt
+          echo "| Format | Use case |" >> release.txt
+          echo "|--------|----------|" >> release.txt
+          echo "| \`.img.gz\` | 物理机 / dd 写盘 |" >> release.txt
+          echo "| \`.vmdk\` | VMware Workstation / ESXi |" >> release.txt
+          echo "| \`.qcow2\` | Proxmox VE / QEMU |" >> release.txt
+          echo "| \`.vdi\` | VirtualBox |" >> release.txt
+          echo "| \`.vhdx\` | Hyper-V |" >> release.txt
+          echo "| \`.iso\` | 光盘引导安装 |" >> release.txt
           release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-x86_64
           echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT

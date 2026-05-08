@@ -1,14 +1,10 @@
 #!/bin/bash
 
-## 移除 SNAPSHOT 标签
-sed -i 's,-SNAPSHOT,,g' include/version.mk
-sed -i 's,-SNAPSHOT,,g' package/base-files/image-config.in
-
 ## 修改默认登录地址
 sed -i 's/192.168.1.1/192.168.100.1/g' package/base-files/files/bin/config_generate
 
-## 启用 irqbalance
-sed -i "s/enabled '0'/enabled '1'/g" feeds/packages/utils/irqbalance/files/irqbalance.config
+## 修改默认主机名
+sed -i 's/ImmortalWrt/x86_64/g' package/base-files/files/bin/config_generate
 
 rm -rf package/new
 mkdir -p package/new
@@ -17,18 +13,13 @@ mkdir -p package/new
 rm -rf feeds/packages/lang/golang
 git clone --depth 1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
-## 移除 feeds 中与新 Go 不兼容的旧包（passwall-packages 提供新版）
-rm -rf feeds/packages/net/xray-core
-
-## ======================== default-settings ========================
-cp -rf $GITHUB_WORKSPACE/patches/default-settings package/new/default-settings
-
 ## ======================== 主题 ========================
-git clone --depth 1 https://github.com/jerrykuku/luci-theme-argon.git package/new/luci-theme-argon
-git clone --depth 1 https://github.com/jerrykuku/luci-app-argon-config.git package/new/luci-app-argon-config
-sed -i 's/luci-theme-bootstrap/luci-theme-argon/' ./feeds/luci/collections/luci-light/Makefile
-rm -rf package/new/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
-cp -f $GITHUB_WORKSPACE/patches/bg1.jpg package/new/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
+## argon 主题背景
+if [ -d feeds/luci/themes/luci-theme-argon ]; then
+  rm -rf feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
+  cp -f $GITHUB_WORKSPACE/patches/bg1.jpg feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
+fi
+sed -i 's/luci-theme-bootstrap/luci-theme-argon/' feeds/luci/collections/luci-light/Makefile 2>/dev/null || true
 
 ## ======================== 科学上网 ========================
 ## Passwall
@@ -54,19 +45,6 @@ cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/AdGuardHome_template.yaml package/n
 rm -rf package/new/luci-app-adguardhome/Makefile
 cp -rf $GITHUB_WORKSPACE/patches/AdGuardHome/Makefile package/new/luci-app-adguardhome/Makefile
 
-## ======================== 下载工具 ========================
-## Alist
-git clone --depth 1 https://github.com/sbwml/luci-app-alist package/new/luci-app-alist
-
-## qBittorrent
-mv package/new/openwrt-packages/qBittorrent-Enhanced-Edition package/new/qBittorrent-Enhanced-Edition
-mv package/new/openwrt-packages/luci-app-qbittorrent package/new/luci-app-qbittorrent
-mv package/new/openwrt-packages/qt6tools package/new/qt6tools
-mv package/new/openwrt-packages/qt6base package/new/qt6base
-mv package/new/openwrt-packages/libdouble-conversion package/new/libdouble-conversion
-rm -rf feeds/packages/libs/libtorrent-rasterbar
-mv package/new/openwrt-packages/libtorrent-rasterbar package/new/libtorrent-rasterbar
-
 ## ======================== DDNS ========================
 rm -rf feeds/luci/applications/luci-app-ddns-go
 rm -rf feeds/packages/net/ddns-go
@@ -74,50 +52,20 @@ git clone --depth 1 https://github.com/sirpdboy/luci-app-ddns-go package/new/ddn
 mv -n package/new/ddnsgo/*ddns-go package/new/
 rm -rf package/new/ddnsgo
 
-## ======================== 工具类 ========================
-## luci-app-wechatpush (removed: requires luci-lua-runtime, incompatible with 21.02)
+## ======================== 下载工具 ========================
+## Alist
+git clone --depth 1 https://github.com/sbwml/luci-app-alist package/new/luci-app-alist
 
+## ======================== 工具类 ========================
 ## luci-app-socat
 git clone --depth 1 https://github.com/chenmozhijin/luci-app-socat package/new/socat
 mv -n package/new/socat/luci-app-socat package/new/
 rm -rf package/new/socat
 
-## luci-app-accesscontrol
-mv package/new/openwrt-packages/luci-app-accesscontrol package/new/luci-app-accesscontrol
-
-## luci-app-autoreboot
-mv package/new/openwrt-packages/luci-app-autoreboot package/new/luci-app-autoreboot
-
-## luci-app-wolplus
-mv package/new/openwrt-packages/luci-app-wolplus package/new/luci-app-wolplus
-
-## luci-app-guest-wifi
-mv package/new/openwrt-packages/luci-app-guest-wifi package/new/luci-app-guest-wifi
-
-## luci-app-irqbalance
-mv package/new/openwrt-packages/luci-app-irqbalance package/new/luci-app-irqbalance
-
-## luci-app-fileassistant & filetransfer
-mv package/new/openwrt-packages/luci-app-fileassistant package/new/luci-app-fileassistant
-mv package/new/openwrt-packages/luci-app-filetransfer package/new/luci-app-filetransfer
-mv package/new/openwrt-packages/luci-lib-fs package/new/luci-lib-fs
-
-## luci-app-cpufreq
-mv package/new/openwrt-packages/luci-app-cpufreq package/new/luci-app-cpufreq
-sed -i 's/1512000/1200000/g' package/new/luci-app-cpufreq/root/etc/uci-defaults/10-cpufreq
-
-## luci-app-ramfree
-mv package/new/openwrt-packages/luci-app-ramfree package/new/luci-app-ramfree
-
-## autocore & automount
-mv package/new/openwrt-packages/autocore package/new/autocore
-mv package/new/openwrt-packages/automount package/new/automount
-mv package/new/openwrt-packages/ntfs3-mount package/new/ntfs3-mount
+## default-settings
+cp -rf $GITHUB_WORKSPACE/patches/default-settings package/new/default-settings
 
 rm -rf package/new/openwrt-packages
-
-## ======================== TurboACC ========================
-curl -sSL https://raw.githubusercontent.com/chenmozhijin/turboacc/luci/add_turboacc.sh -o add_turboacc.sh && bash add_turboacc.sh
 
 ## ======================== ZSH ========================
 bash $GITHUB_WORKSPACE/scripts/zsh.sh

@@ -30,6 +30,7 @@ Custom ImmortalWrt firmware builds via GitHub Actions — based on official sour
 | Language | English | Chinese (zh-cn) |
 | NTP | Global servers | China servers (aliyun, tencent) |
 | Password | None | None |
+| x86 NIC drivers | Basic (e1000) | e1000e, igb, igc, i40e, ixgbe, r8169, vmxnet3 |
 | x86 formats | img only | img, vmdk, qcow2, vdi, vhdx, iso |
 
 ## Quick Start

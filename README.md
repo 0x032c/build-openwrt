@@ -41,6 +41,18 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 
 > **Scheduled builds**: `build-all` runs automatically on the 1st of each month.
 
+## Local Build
+
+You can also build firmware locally on any Linux machine (16GB+ RAM recommended):
+
+```bash
+git clone https://github.com/0x032c/build-openwrt.git
+cd build-openwrt
+./scripts/build-local.sh rax3000m-24.10
+```
+
+See [docs/LOCAL_BUILD.md](docs/LOCAL_BUILD.md) for full instructions, options, and manual steps.
+
 ## Project Structure
 
 ```
@@ -50,7 +62,8 @@ Automated OpenWrt / ImmortalWrt firmware builds powered by GitHub Actions.
 ├── x86_64/                # x86_64 device config & DIY script
 ├── uboot/                 # Pre-built U-Boot for RAX3000M (supports .itb)
 ├── patches/               # Custom patches (AdGuardHome, default-settings, bg1.jpg, .zshrc)
-├── scripts/               # Shared scripts (env setup, disk cleanup, OpenClash)
+├── scripts/               # Shared scripts (env setup, disk cleanup, OpenClash, local build)
+├── docs/                  # Documentation (local build guide)
 ├── COMPARISON.md          # Detailed comparison: 21.02 vs 24.10
 └── LICENSE
 ```

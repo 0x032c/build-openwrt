@@ -144,7 +144,7 @@ jobs:
           echo "| \`.vdi\` | VirtualBox |" >> release.txt
           echo "| \`.vhdx\` | Hyper-V |" >> release.txt
           echo "| \`.iso\` | 光盘引导安装 |" >> release.txt
-          release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-x86_64
+          release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-x86_64-generic
           echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT
 

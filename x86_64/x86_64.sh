@@ -75,8 +75,7 @@ mv -n package/new/ddnsgo/*ddns-go package/new/
 rm -rf package/new/ddnsgo
 
 ## ======================== 工具类 ========================
-## luci-app-wechatpush
-git clone --depth 1 https://github.com/tty228/luci-app-wechatpush package/new/luci-app-wechatpush
+## luci-app-wechatpush (removed: requires luci-lua-runtime, incompatible with 21.02)
 
 ## luci-app-socat
 git clone --depth 1 https://github.com/chenmozhijin/luci-app-socat package/new/socat

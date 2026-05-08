@@ -130,12 +130,7 @@ jobs:
         if: steps.compile.outputs.status == 'success'
         run: |
           cd openwrt/bin/targets/*/*
-          ls -al
-          rm -rf packages
-          rm -rf *.buildinfo
-          rm -rf *.json
-          rm -rf *.manifest
-          rm -rf *-initramfs-kernel.bin
+          rm -rf packages *.buildinfo *.json *.manifest
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
@@ -150,16 +145,20 @@ jobs:
         id: tag
         if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
-          echo -e "### immortalwrt-mt7981-cmcc_rax3000m-nand" >> release.txt
+          echo -e "### ImmortalWrt 21.02 - CMCC RAX3000M (NAND)" >> release.txt
+          echo "- Source: hanwckf/immortalwrt-mt798x openwrt-21.02" >> release.txt
+          echo "- Target: mediatek/mt7981" >> release.txt
+          echo "- Kernel: 5.4.x" >> release.txt
           if grep -q 'CONFIG_PACKAGE_mtwifi-cfg=y' openwrt/.config; then
-            echo "- 使用 OpenWrt 原生无线控制界面 (mtwifi-cfg)" >> release.txt
-            wlan_luci_interface="mtwifi-cfg"
+            echo "- WiFi: mtwifi-cfg (OpenWrt native)" >> release.txt
           else
-            echo "- 使用 MTK SDK 无线控制界面" >> release.txt
-            wlan_luci_interface="luci-app-mtk"
+            echo "- WiFi: luci-app-mtk (MTK SDK)" >> release.txt
           fi
-          echo "- 后台地址：192.168.100.1" >> release.txt
-          echo "- 默认密码：password" >> release.txt
+          echo "- Package Manager: opkg" >> release.txt
+          echo "- Gateway: 192.168.100.1" >> release.txt
+          echo "- Password: (none)" >> release.txt
+          echo "" >> release.txt
+          echo "⚠️ Requires U-Boot with FIT image support (.itb format)" >> release.txt
           release_tag=$(date +"%Y.%m.%d")-immortalwrt-21.02-cmcc_rax3000m
           echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
           echo "status=success" >> $GITHUB_OUTPUT

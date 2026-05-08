@@ -17,6 +17,9 @@ mkdir -p package/new
 rm -rf feeds/packages/lang/golang
 git clone --depth 1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
 
+## 移除 feeds 中与新 Go 不兼容的旧包（passwall-packages 提供新版）
+rm -rf feeds/packages/net/xray-core
+
 ## ======================== default-settings ========================
 cp -rf $GITHUB_WORKSPACE/patches/default-settings package/new/default-settings
 

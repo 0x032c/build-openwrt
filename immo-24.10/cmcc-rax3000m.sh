@@ -9,6 +9,10 @@ sed -i 's/ImmortalWrt/RAX3000M/g' package/base-files/files/bin/config_generate
 rm -rf package/new
 mkdir -p package/new
 
+## ======================== Golang 编译环境 ========================
+rm -rf feeds/packages/lang/golang
+git clone --depth 1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/packages/lang/golang
+
 ## ======================== 主题 ========================
 ## argon 主题背景
 if [ -d feeds/luci/themes/luci-theme-argon ]; then

@@ -38,8 +38,8 @@ If your host's virtual network (e.g. VMnet1) is on a different subnet, you need 
 Check your host's VMnet IP first (Windows: `ipconfig`, Linux: `ip addr`), then adjust:
 
 ```bash
-# Example: host VMnet1 is 192.168.43.1, set OpenWrt to .2
-uci set network.lan.ipaddr='192.168.43.2'
+# Example: set LAN IP to 192.168.100.2
+uci set network.lan.ipaddr='192.168.100.2'
 uci commit network
 /etc/init.d/network restart
 ```
@@ -49,10 +49,10 @@ uci commit network
 From your host machine:
 
 ```bash
-ping 192.168.43.2
+ping 192.168.100.2
 ```
 
-If ping succeeds, open browser: `http://192.168.43.2`
+If ping succeeds, open browser: `http://192.168.100.2`
 
 ## Troubleshooting
 

@@ -16,6 +16,13 @@ uci commit system && service sysntpd reload
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
+# DNS
+uci set network.wan.peerdns='0'
+uci -q delete network.wan.dns
+uci add_list network.wan.dns='223.5.5.5'
+uci add_list network.wan.dns='8.8.8.8'
+uci commit network
+
 # Argon theme: use local background instead of Bing wallpaper
 uci set argon.@global[0].online_wallpaper='none'
 uci commit argon

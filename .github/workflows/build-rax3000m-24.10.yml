@@ -19,8 +19,6 @@ env:
   DIY_SH: immo-24.10/cmcc-rax3000m.sh
   FREE_DISK_SH: scripts/free_disk_space.sh
   ENV_SH: scripts/environment.sh
-  UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -116,41 +114,12 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
-      - name: Upload firmware directory
+      - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
-        if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
+        if: steps.organize.outputs.status == 'success'
         with:
-          name: ImmortalWrt_24.10_RAX3000M${{ env.FILE_DATE }}
+          name: firmware-rax3000m-24.10
           path: ${{ env.FIRMWARE }}
-
-      - name: Generate release tag
-        id: tag
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-        run: |
-          echo -e "### ImmortalWrt 24.10 - CMCC RAX3000M (NAND)" >> release.txt
-          echo "- Source: immortalwrt/immortalwrt openwrt-24.10" >> release.txt
-          echo "- Target: mediatek/filogic" >> release.txt
-          echo "- Kernel: 6.6.x" >> release.txt
-          echo "- WiFi: mt76 (open-source)" >> release.txt
-          echo "- Package Manager: opkg" >> release.txt
-          echo "- Gateway: 192.168.100.1" >> release.txt
-          echo "- Password: (none)" >> release.txt
-          echo "" >> release.txt
-          echo "⚠️ Requires U-Boot with FIT image support (.itb format)" >> release.txt
-          release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-cmcc_rax3000m
-          echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
-          echo "status=success" >> $GITHUB_OUTPUT
-
-      - name: Upload firmware to release
-        uses: softprops/action-gh-release@v2
-        if: steps.tag.outputs.status == 'success' && !cancelled()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          name: ${{ steps.tag.outputs.release_tag }}
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*
 
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
@@ -159,13 +128,3 @@ jobs:
           repository: ${{ github.repository }}
           retain_days: 1
           keep_minimum_runs: 3
-
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@v0.3.4
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-        with:
-          keep_latest: 10
-          delete_tags: true
-          delete_tag_pattern: '.*24.10.*'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

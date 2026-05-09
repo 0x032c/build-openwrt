@@ -1,5 +1,5 @@
 #
-# Build all firmware targets in parallel
+# Build all firmware targets and publish a unified release
 #
 
 name: build-all
@@ -23,3 +23,89 @@ jobs:
   x86_64:
     uses: ./.github/workflows/build-x86_64-main.yml
     secrets: inherit
+
+  release:
+    needs: [rax3000m-21-02, rax3000m-24-10, x86_64]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all firmware artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: firmware
+
+      - name: Calculate next release version
+        id: version
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PREFIX="v24.10"
+          LATEST=$(gh release list --repo ${{ github.repository }} --limit 50 \
+            | grep -oP "${PREFIX}-r\K[0-9]+" | sort -n | tail -1 || echo "")
+          if [ -z "$LATEST" ]; then
+            NEXT=1
+          else
+            NEXT=$((LATEST + 1))
+          fi
+          TAG="${PREFIX}-r${NEXT}"
+          echo "tag=${TAG}" >> $GITHUB_OUTPUT
+          echo "Next release: ${TAG}"
+
+      - name: Generate release notes
+        run: |
+          cat > release.txt << 'EOF'
+          ## Firmware Images
+
+          ### ImmortalWrt 24.10 - x86_64
+          - Source: immortalwrt/immortalwrt openwrt-24.10
+          - Target: x86/64
+          - Kernel: 6.6.x
+          - Package Manager: opkg
+          - Gateway: 192.168.100.1
+          - Password: (none)
+
+          | Format | Use case |
+          |--------|----------|
+          | `*.img.gz` | 物理机 / dd 写盘 |
+          | `*.vmdk` | VMware Workstation / ESXi |
+          | `*.qcow2` | Proxmox VE / QEMU |
+          | `*.vdi` | VirtualBox |
+          | `*.vhdx` | Hyper-V |
+          | `*.iso` | 光盘引导安装 |
+
+          ---
+
+          ### ImmortalWrt 24.10 - CMCC RAX3000M (NAND)
+          - Source: immortalwrt/immortalwrt openwrt-24.10
+          - Target: mediatek/filogic
+          - Kernel: 6.6.x
+          - WiFi: mt76 (open-source)
+          - Package Manager: opkg
+          - Gateway: 192.168.100.1
+          - Password: (none)
+
+          ⚠️ Requires U-Boot with FIT image support (.itb format)
+
+          ---
+
+          ### ImmortalWrt 21.02 - CMCC RAX3000M (NAND)
+          - Source: hanwckf/immortalwrt-mt798x openwrt-21.02
+          - Target: mediatek/mt7981
+          - Kernel: 5.4.x
+          - WiFi: mtwifi-cfg / luci-app-mtk
+          - Package Manager: opkg
+          - Gateway: 192.168.100.1
+          - Password: (none)
+
+          ⚠️ Requires U-Boot with FIT image support (.itb format)
+          EOF
+          sed -i 's/^          //' release.txt
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
+          body_path: release.txt
+          files: firmware/**/*

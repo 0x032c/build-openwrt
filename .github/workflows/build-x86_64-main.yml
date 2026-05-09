@@ -20,9 +20,6 @@ env:
   DIY_SH: x86_64/x86_64.sh
   FREE_DISK_SH: scripts/free_disk_space.sh
   ENV_SH: scripts/environment.sh
-  UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_RELEASE: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -116,48 +113,12 @@ jobs:
           echo "FIRMWARE=$PWD" >> $GITHUB_ENV
           echo "status=success" >> $GITHUB_OUTPUT
 
-      - name: Upload firmware directory
+      - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
-        if: steps.organize.outputs.status == 'success' && env.UPLOAD_FIRMWARE == 'true'
+        if: steps.organize.outputs.status == 'success'
         with:
-          name: OpenWrt_x86_64${{ env.FILE_DATE }}
+          name: firmware-x86_64
           path: ${{ env.FIRMWARE }}
-
-      - name: Generate release tag
-        id: tag
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-        run: |
-          echo -e "### ImmortalWrt 24.10 - x86_64" >> release.txt
-          echo "- Source: immortalwrt/immortalwrt openwrt-24.10" >> release.txt
-          echo "- Target: x86/64" >> release.txt
-          echo "- Kernel: 6.6.x" >> release.txt
-          echo "- Package Manager: opkg" >> release.txt
-          echo "- Gateway: 192.168.100.1" >> release.txt
-          echo "- Password: (none)" >> release.txt
-          echo "" >> release.txt
-          echo "**Firmware formats:**" >> release.txt
-          echo "| Format | Use case |" >> release.txt
-          echo "|--------|----------|" >> release.txt
-          echo "| \`.img.gz\` | 物理机 / dd 写盘 |" >> release.txt
-          echo "| \`.vmdk\` | VMware Workstation / ESXi |" >> release.txt
-          echo "| \`.qcow2\` | Proxmox VE / QEMU |" >> release.txt
-          echo "| \`.vdi\` | VirtualBox |" >> release.txt
-          echo "| \`.vhdx\` | Hyper-V |" >> release.txt
-          echo "| \`.iso\` | 光盘引导安装 |" >> release.txt
-          release_tag=$(date +"%Y.%m.%d")-immortalwrt-24.10-x86_64-generic
-          echo "release_tag=${release_tag}" >> $GITHUB_OUTPUT
-          echo "status=success" >> $GITHUB_OUTPUT
-
-      - name: Upload firmware to release
-        uses: softprops/action-gh-release@v2
-        if: steps.tag.outputs.status == 'success' && !cancelled()
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          name: ${{ steps.tag.outputs.release_tag }}
-          tag_name: ${{ steps.tag.outputs.release_tag }}
-          body_path: release.txt
-          files: ${{ env.FIRMWARE }}/*
 
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
@@ -166,13 +127,3 @@ jobs:
           repository: ${{ github.repository }}
           retain_days: 1
           keep_minimum_runs: 3
-
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@v0.3.4
-        if: steps.compile.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
-        with:
-          keep_latest: 10
-          delete_tags: true
-          delete_tag_pattern: '.*x86_64.*'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

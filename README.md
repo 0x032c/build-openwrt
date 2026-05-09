@@ -33,6 +33,14 @@ Custom ImmortalWrt firmware builds via GitHub Actions — based on official sour
 | x86 NIC drivers | Basic (e1000) | e1000e, igb, igc, i40e, ixgbe, r8169, vmxnet3 |
 | x86 formats | img only | img, vmdk, qcow2, vdi, vhdx, iso |
 
+## Releases
+
+All firmware images are published under a unified tag: **`v24.10-rN`** (e.g. `v24.10-r1`, `v24.10-r2`...).
+
+Each release contains firmware for all supported devices. The version number auto-increments on every build.
+
+> Download the latest release: [Releases](../../releases)
+
 ## Quick Start
 
 1. Click **[Fork](https://github.com/0x032c/build-openwrt/fork)** at the top right

@@ -14,8 +14,9 @@ git clone --depth 1 https://github.com/sbwml/packages_lang_golang -b 26.x feeds/
 ## ======================== 主题 ========================
 ## argon 主题背景
 if [ -d feeds/luci/themes/luci-theme-argon ]; then
-  rm -rf feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
-  cp -f $GITHUB_WORKSPACE/patches/bg1.jpg feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg
+  mkdir -p feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/background
+  cp -f $GITHUB_WORKSPACE/patches/bg1.jpg feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/background/bg1.jpg
+  rm -rf feeds/luci/themes/luci-theme-argon/htdocs/luci-static/argon/img/bg1.jpg 2>/dev/null
 fi
 sed -i 's/luci-theme-bootstrap/luci-theme-argon/' feeds/luci/collections/luci-light/Makefile 2>/dev/null || true
 

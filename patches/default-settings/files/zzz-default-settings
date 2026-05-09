@@ -16,6 +16,10 @@ uci commit system && service sysntpd reload
 sed -i '/log-facility/d' /etc/dnsmasq.conf
 echo "log-facility=/dev/null" >> /etc/dnsmasq.conf
 
+# Argon theme: use local background instead of Bing wallpaper
+uci set argon.@global[0].online_wallpaper='none'
+uci commit argon
+
 rm -rf /tmp/luci-modulecache/
 rm -f /tmp/luci-indexcache
 

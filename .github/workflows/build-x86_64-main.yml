@@ -131,7 +131,7 @@ jobs:
           echo "- Source: immortalwrt/immortalwrt openwrt-24.10" >> release.txt
           echo "- Target: x86/64" >> release.txt
           echo "- Kernel: 6.6.x" >> release.txt
-          echo "- Package Manager: apk" >> release.txt
+          echo "- Package Manager: opkg" >> release.txt
           echo "- Gateway: 192.168.100.1" >> release.txt
           echo "- Password: (none)" >> release.txt
           echo "" >> release.txt

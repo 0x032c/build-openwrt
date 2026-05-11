@@ -20,18 +20,29 @@ Custom ImmortalWrt firmware builds via GitHub Actions — based on official sour
 | | Official ImmortalWrt | This build |
 |--|---------------------|------------|
 | Theme | Bootstrap (basic) | Argon + custom background |
-| Proxy | None | Passwall, OpenClash |
-| DNS | dnsmasq only | + MosDNS, AdGuardHome, SmartDNS |
-| DDNS | None | DDNS-Go |
-| Download | None | Alist |
-| File sharing | None | Samba4 |
 | Shell | ash | ZSH + Oh My Zsh |
 | LAN IP | 192.168.1.1 | 192.168.100.1 |
 | Language | English | Chinese (zh-cn) |
 | NTP | Global servers | China servers (aliyun, tencent) |
+| DNS | 223.5.5.5, 8.8.8.8 | Fixed on WAN |
 | Password | None | None |
 | x86 NIC drivers | Basic (e1000) | e1000e, igb, igc, i40e, ixgbe, r8169, vmxnet3 |
 | x86 formats | img only | img, vmdk, qcow2, vdi, vhdx, iso |
+
+## Pre-installed Packages
+
+| Category | Packages |
+|----------|----------|
+| Proxy | Passwall (x86), OpenClash |
+| DNS | MosDNS, AdGuardHome, SmartDNS |
+| VPN | WireGuard, ZeroTier, frpc (frp client) |
+| DDNS | DDNS-Go |
+| Download | Alist |
+| File sharing | Samba4, FileBrowser |
+| Monitoring | nlbwmon (bandwidth), vnstat2 (traffic stats) |
+| Network | UPnP, WoL (Wake on LAN), Socat |
+| System | ttyd (web terminal), Watchcat (auto-reboot on failure), AutoReboot (scheduled) |
+| Certificates | ACME (auto SSL)
 
 ## Releases
 
